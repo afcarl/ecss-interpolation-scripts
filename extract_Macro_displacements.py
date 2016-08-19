@@ -43,6 +43,19 @@ with open(nodes_filename, 'r') as f:
 
 number_of_points = int(sum(map(len, nodes)))
 
+with open('coordinates_before_rotation.csv', 'w') as csvfile:
+    fieldnames = ['node'] + ["x", "y", "z"]
+    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+    writer.writeheader()
+    for macro in nodes:
+        for node in macro:
+            writer.writerow({'node': node,
+                             'x': coordinates[node][0],
+                             'y': coordinates[node][1],
+                             'z': coordinates[node][2],
+                            })
+
 ######## Perform rotation around y centered on reference node
 
 alpha = np.radians(-48.12)
@@ -53,18 +66,30 @@ transformation_matrix = np.array([[ np.cos(alpha), 0, np.sin(alpha) ],
                                   [-np.sin(alpha), 0, np.cos(alpha) ]])
 
 # rotation around y centered on reference node
-for macro in coordinates:
-    ref = macro[0] # reference node
+for macro in nodes:
+    ref_node = macro[0] # reference node
     for node in macro:
-        node += np.dot(transformation_matrix, node - ref)
-    
-######## Extract displacement at the points
-rounded_coordinates = [np.around(c, decimals=3) for c in flatten_list_of_lists(coordinates)]
-logging.debug(rounded_coordinates[:3])
+        coordinates[node] += np.dot(transformation_matrix, coordinates[node] - coordinates[ref_node])
 
-assert len(flatten_list_of_lists(coordinates)) == 64
-session.Path(name='Path-A', type=POINT_LIST, 
-    expression=rounded_coordinates)
+with open('coordinates_after_rotation.csv', 'w') as csvfile:
+    fieldnames = ['node'] + ["x", "y", "z"]
+    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+    writer.writeheader()
+    for macro in nodes:
+        for node in macro:
+            writer.writerow({'node': node,
+                             'x': coordinates[node][0],
+                             'y': coordinates[node][1],
+                             'z': coordinates[node][2],
+                            })
+
+            
+######## Extract displacement at the points
+#rounded_coordinates = [np.around(coordinates[n], decimals=3) for n in flatten_list_of_lists(nodes)]
+rounded_coordinates = [coordinates[n] for n in flatten_list_of_lists(nodes)]
+logging.debug(rounded_coordinates[:4])
+session.Path(name='Path-A', type=POINT_LIST, expression=rounded_coordinates)
 pth = session.paths['Path-A']
 
 U = {}
@@ -77,11 +102,13 @@ for component in components:
 
     session.XYDataFromPath(name='XYData', path=pth, includeIntersections=False,
         projectOntoMesh=True, pathStyle=PATH_POINTS, numIntervals=10,
-        projectionTolerance=0.01, shape=DEFORMED, labelType=SEQ_ID)
+        projectionTolerance=0.0001, shape=DEFORMED, labelType=SEQ_ID)
     U[component] = [x[1] for x in session.xyDataObjects['XYData']]
     logging.debug("Lenght of %s: %d", component, len(U[component]))
-    assert len(U[component]) == number_of_points, \
-       "Length of component {} is {} instead of {}".format(component, len(U[component]), number_of_points)
+    
+    #assert len(U[component]) == number_of_points, \
+    #   "Length of component {} is {} instead of {}".format(component, len(U[component]), number_of_points)
+
 ######## Rotate the displacement back
 
 # not implemented yet
