@@ -32,17 +32,15 @@ logging.info("Reading file", nodes_filename)
 lastFrame = odb.steps['Step-1'].frames[-1]
 
 nodes = []
-coordinates = []
+coordinates = {}
 with open(nodes_filename, 'r') as f:
     for row in csv.reader(f):
         nodes.append([])
-        coordinates.append([])
         for node in row:
             logging.debug("Extracting coordinates for node", node)
             nodes[-1].append(int(node))
-            coordinates[-1].append(
-                odb.rootAssembly.instances["PART-1-1"].nodes[int(node)-1].coordinates
-            )
+            coordinates[int(node)] = odb.rootAssembly.instances["PART-1-1"].nodes[int(node)-1].coordinates
+
 number_of_points = int(sum(map(len, nodes)))
 
 ######## Perform rotation around y centered on reference node
