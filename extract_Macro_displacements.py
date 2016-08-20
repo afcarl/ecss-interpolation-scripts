@@ -65,11 +65,13 @@ transformation_matrix = np.array([[ np.cos(alpha), 0, np.sin(alpha) ],
                                   [             0, 0,             0 ],
                                   [-np.sin(alpha), 0, np.cos(alpha) ]])
 
+rotated_coordinates = {}
 # rotation around y centered on reference node
 for macro in nodes:
     ref_node = macro[0] # reference node
     for node in macro:
-        coordinates[node] += np.dot(transformation_matrix, coordinates[node] - coordinates[ref_node])
+        rotated_coordinates[node] = coordinates[node] + \
+             np.dot(transformation_matrix, coordinates[node] - coordinates[ref_node])
 
 with open('coordinates_after_rotation.csv', 'w') as csvfile:
     fieldnames = ['node'] + ["x", "y", "z"]
@@ -79,15 +81,15 @@ with open('coordinates_after_rotation.csv', 'w') as csvfile:
     for macro in nodes:
         for node in macro:
             writer.writerow({'node': node,
-                             'x': coordinates[node][0],
-                             'y': coordinates[node][1],
-                             'z': coordinates[node][2],
+                             'x': rotated_coordinates[node][0],
+                             'y': rotated_coordinates[node][1],
+                             'z': rotated_coordinates[node][2],
                             })
 
-            
+del coordinates     
 ######## Extract displacement at the points
-#rounded_coordinates = [np.around(coordinates[n], decimals=3) for n in flatten_list_of_lists(nodes)]
-rounded_coordinates = [coordinates[n] for n in flatten_list_of_lists(nodes)]
+#rounded_coordinates = [np.around(rotated_coordinates[n], decimals=3) for n in flatten_list_of_lists(nodes)]
+rounded_coordinates = [rotated_coordinates[n] for n in flatten_list_of_lists(nodes)]
 logging.debug(rounded_coordinates[:4])
 session.Path(name='Path-A', type=POINT_LIST, expression=rounded_coordinates)
 pth = session.paths['Path-A']
