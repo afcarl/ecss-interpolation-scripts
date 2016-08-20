@@ -86,7 +86,6 @@ with open('coordinates_after_rotation.csv', 'w') as csvfile:
                              'z': rotated_coordinates[node][2],
                             })
 
-del coordinates     
 ######## Extract displacement at the points
 #rounded_coordinates = [np.around(rotated_coordinates[n], decimals=3) for n in flatten_list_of_lists(nodes)]
 rounded_coordinates = [rotated_coordinates[n] for n in flatten_list_of_lists(nodes)]
