@@ -29,7 +29,8 @@ from odbAccess import openOdb
 logging.info("Reading file", filename)
 odb = openOdb(filename)
 logging.info("Reading file", nodes_filename)
-lastFrame = odb.steps['Step-1'].frames[-1]
+#lastFrame = odb.steps['Step-1'].frames[-1]
+#session.viewports['Viewport: 1'].odbDisplay.setFrame(step=0, frame=6)
 
 nodes = []
 coordinates = {}
@@ -165,6 +166,7 @@ U = {}
 components = ["U1", "U2", "U3"]
 for component in components:
     session.viewports['Viewport: 1'].setValues(displayedObject=odb) 
+    session.viewports['Viewport: 1'].odbDisplay.setFrame(step=0, frame=6)
 
     session.viewports['Viewport: 1'].odbDisplay.setPrimaryVariable(
             variableLabel='U', outputPosition=NODAL, refinement=(COMPONENT, component))
