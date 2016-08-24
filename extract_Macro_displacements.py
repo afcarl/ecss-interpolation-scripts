@@ -42,6 +42,8 @@ with open(nodes_filename, 'r') as f:
 
 number_of_points = int(sum(map(len, nodes)))
 
+#coordinates[2759] = np.array([0.201, 0.218, 0.214])
+#coordinates[2970] = np.array([0.201, 0.215, 0.217])
 with open('coordinates_before_rotation.csv', 'w') as csvfile:
     fieldnames = ['node'] + ["x", "y", "z"]
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
