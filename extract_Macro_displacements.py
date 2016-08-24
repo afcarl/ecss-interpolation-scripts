@@ -27,7 +27,6 @@ def flatten_list_of_lists(l):
 from odbAccess import openOdb
 logging.info("Reading file", filename)
 odb = openOdb(filename)
-from abapy.misc import dump
 logging.info("Reading file", nodes_filename)
 lastFrame = odb.steps['Step-1'].frames[-1]
 
