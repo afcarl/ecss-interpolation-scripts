@@ -104,12 +104,13 @@ for component in components:
 
     session.XYDataFromPath(name='XYData', path=pth, includeIntersections=False,
         projectOntoMesh=True, pathStyle=PATH_POINTS, numIntervals=10,
-        projectionTolerance=0.0001, shape=DEFORMED, labelType=SEQ_ID)
+        projectionTolerance=0.001, shape=DEFORMED, labelType=SEQ_ID)
     U[component] = [x[1] for x in session.xyDataObjects['XYData']]
     logging.debug("Lenght of %s: %d", component, len(U[component]))
-    
-    #assert len(U[component]) == number_of_points, \
-    #   "Length of component {} is {} instead of {}".format(component, len(U[component]), number_of_points)
+
+    if len(U[component]) != number_of_points:
+        logging.error("Length of component {} is {} instead of {}".format(component,
+                  len(U[component]), number_of_points))
 
 ######## Rotate the displacement back
 
