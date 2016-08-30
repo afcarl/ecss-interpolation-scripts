@@ -18,6 +18,7 @@ nodes_filename = "right_femur_nodes.csv"
 logging_level = logging.DEBUG
 projection_tolerance = 0.0000001
 test_coordinates = True
+alpha_degrees = -48.12
 ########
 
 logging.basicConfig(filename=filename + ".log",level=logging_level, filemode="w")
@@ -128,7 +129,7 @@ with open('coordinates_before_rotation.csv', 'w') as csvfile:
 
 ######## Perform rotation around y centered on reference node
 
-alpha = np.radians(-48.12)
+alpha = np.radians(alpha_degrees)
 
 # rotation matrix with 0 on the y axis because that component doesn't have to be modified
 transformation_matrix = np.array([[ np.cos(alpha), 0, np.sin(alpha) ],
