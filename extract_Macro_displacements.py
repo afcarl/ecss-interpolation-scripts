@@ -16,6 +16,7 @@ filename = "rgtd5-SI91pss.odb"
 nodes_filename = "right_femur_nodes.csv"
 # logging.DEBUG for verbose output, logging.INFO intermediate, logging.ERROR for quiet
 logging_level = logging.DEBUG
+projection_tolerance = 0.0000001
 test_coordinates = True
 ########
 
@@ -173,7 +174,7 @@ for component in components:
 
     session.XYDataFromPath(name='XYData', path=pth, includeIntersections=False,
         projectOntoMesh=True, pathStyle=PATH_POINTS, numIntervals=10,
-        projectionTolerance=0.001, shape=DEFORMED, labelType=SEQ_ID)
+        projectionTolerance=projection_tolerance, shape=DEFORMED, labelType=SEQ_ID)
     U[component] = [x[1] for x in session.xyDataObjects['XYData']]
     logging.debug("Lenght of %s: %d", component, len(U[component]))
 
