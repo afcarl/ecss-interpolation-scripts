@@ -175,7 +175,7 @@ for component in components:
     session.XYDataFromPath(name='XYData-' + component, path=pth, includeIntersections=False,
         projectOntoMesh=True, pathStyle=PATH_POINTS, numIntervals=10,
         projectionTolerance=projection_tolerance, shape=DEFORMED, labelType=TRUE_DISTANCE)
-    U[component] = [x[1] for x in session.xyDataObjects['XYData']]
+    U[component] = [x[1] for x in session.xyDataObjects['XYData-' + component]]
     logging.debug("Lenght of %s: %d", component, len(U[component]))
 
     if len(U[component]) != number_of_points:
