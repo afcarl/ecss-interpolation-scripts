@@ -172,7 +172,7 @@ for component in components:
     session.viewports['Viewport: 1'].odbDisplay.setPrimaryVariable(
             variableLabel='U', outputPosition=NODAL, refinement=(COMPONENT, component))
 
-    session.XYDataFromPath(name='XYData', path=pth, includeIntersections=False,
+    session.XYDataFromPath(name='XYData-' + component, path=pth, includeIntersections=False,
         projectOntoMesh=True, pathStyle=PATH_POINTS, numIntervals=10,
         projectionTolerance=projection_tolerance, shape=DEFORMED, labelType=SEQ_ID)
     U[component] = [x[1] for x in session.xyDataObjects['XYData']]
