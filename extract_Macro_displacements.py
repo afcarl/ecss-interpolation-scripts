@@ -174,7 +174,7 @@ for component in components:
 
     session.XYDataFromPath(name='XYData-' + component, path=pth, includeIntersections=False,
         projectOntoMesh=True, pathStyle=PATH_POINTS, numIntervals=10,
-        projectionTolerance=projection_tolerance, shape=DEFORMED, labelType=SEQ_ID)
+        projectionTolerance=projection_tolerance, shape=DEFORMED, labelType=TRUE_DISTANCE)
     U[component] = [x[1] for x in session.xyDataObjects['XYData']]
     logging.debug("Lenght of %s: %d", component, len(U[component]))
 
