@@ -175,6 +175,11 @@ for component in components:
     session.XYDataFromPath(name='XYData-' + component, path=pth, includeIntersections=False,
         projectOntoMesh=True, pathStyle=PATH_POINTS, numIntervals=10,
         projectionTolerance=projection_tolerance, shape=DEFORMED, labelType=TRUE_DISTANCE)
+
+    xQuantity = visualization.QuantityType(type=NUMBER)
+    yQuantity = visualization.QuantityType(type=DISPLACEMENT)
+    session.xyDataObjects['XYData-' + component].setValues(axis1QuantityType=xQuantity, axis2QuantityType=yQuantity)
+
     U[component] = [x[1] for x in session.xyDataObjects['XYData-' + component]]
     logging.debug("Lenght of %s: %d", component, len(U[component]))
 
