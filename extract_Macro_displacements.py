@@ -176,7 +176,7 @@ for component in components:
             variableLabel='U', outputPosition=NODAL, refinement=(COMPONENT, component))
 
     session.XYDataFromPath(name='XYData-' + component, path=pth, includeIntersections=False,
-        projectOntoMesh=True, pathStyle=PATH_POINTS, numIntervals=10,
+        projectOntoMesh=True, pathStyle=PATH_POINTS,
         projectionTolerance=projection_tolerance, shape=DEFORMED, labelType=TRUE_DISTANCE)
 
     xQuantity = visualization.QuantityType(type=NUMBER)
