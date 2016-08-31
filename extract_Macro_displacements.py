@@ -44,6 +44,8 @@ with open(nodes_filename, 'r') as f:
             nodes[-1].append(int(node))
             coordinates[int(node)] = odb.rootAssembly.instances["PART-1-1"].nodes[int(node)-1].coordinates
 
+nodes = nodes[:2]
+
 number_of_points = int(sum(map(len, nodes)))
 
 if test_coordinates:
