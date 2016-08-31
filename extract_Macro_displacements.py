@@ -143,7 +143,7 @@ rotated_coordinates = {}
 for macro in nodes:
     ref_node = macro[0] # reference node
     for node in macro:
-        rotated_coordinates[node] = coordinates[node] + \
+        rotated_coordinates[node] = coordinates[ref_node] + \
              np.dot(transformation_matrix, coordinates[node] - coordinates[ref_node])
 
 with open('coordinates_after_rotation.csv', 'w') as csvfile:
