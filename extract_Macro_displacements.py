@@ -188,10 +188,6 @@ for component in components:
         logging.error("Length of component {} is {} instead of {}".format(component,
                   len(U[component]), number_of_points))
 
-######## Rotate the displacement back
-
-# not implemented yet
-
 ######## Write the displacements to disk
 
 with open('U.csv', 'w') as csvfile:
@@ -207,5 +203,30 @@ with open('U.csv', 'w') as csvfile:
                              'U1': U['U1'][i],
                              'U2': U['U2'][i],
                              'U3': U['U3'][i],
+                            })
+            i = i + 1
+
+######## Rotate the displacement back
+
+transformation_matrix = np.array([[ np.cos(-alpha), 0, np.sin(-alpha) ],
+                                  [              0, 1,             0 ],
+                                  [-np.sin(-alpha), 0, np.cos(-alpha) ]])
+
+with open('U_rotated_back.csv', 'w') as csvfile:
+    fieldnames = ['node'] + components
+    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+    writer.writeheader()
+    i = 0
+    for macro in nodes:
+        for node in macro:
+            rotated = np.dot(
+                                transformation_matrix,
+                                np.array([U['U1'][i], U['U2'][i], U['U3'][i]])
+                            )
+            writer.writerow({'node': node,
+                             'U1': rotated[0],
+                             'U2': rotated[1],
+                             'U3': rotated[2]
                             })
             i = i + 1
