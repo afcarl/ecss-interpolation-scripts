@@ -23,9 +23,6 @@ alpha_degrees = -48.12
 
 logging.basicConfig(filename=filename + ".log",level=logging_level, filemode="w")
 
-def flatten_list_of_lists(l):
-    return [item for sublist in l for item in sublist]
-
 ######## Extract coordinates from the odb file and store it in nodes
 from odbAccess import openOdb
 logging.info("Reading file", filename)
@@ -34,15 +31,9 @@ logging.info("Reading file", nodes_filename)
 #lastFrame = odb.steps['Step-1'].frames[-1]
 #session.viewports['Viewport: 1'].odbDisplay.setFrame(step=0, frame=6)
 
-nodes = []
-coordinates = {}
-with open(nodes_filename, 'r') as f:
-    for row in csv.reader(f):
-        nodes.append([])
-        for node in row:
-            logging.debug("Extracting coordinates for node", node)
-            nodes[-1].append(int(node))
-            coordinates[int(node)] = odb.rootAssembly.instances["PART-1-1"].nodes[int(node)-1].coordinates
+from macro_library import read_odb_coordinates, flatten_list_of_lists
+
+nodes, coordinates = read_odb_coordinates(nodes_filename, odb)
 
 number_of_points = int(sum(map(len, nodes)))
 
