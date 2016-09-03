@@ -17,9 +17,17 @@ nodes_filename = "right_femur_nodes.csv"
 # logging.DEBUG for verbose output, logging.INFO intermediate, logging.ERROR for quiet
 logging_level = logging.DEBUG
 projection_tolerance = 0.0000001
-test_coordinates = True
 alpha_degrees = -48.12
 ########
+
+######## Data structures
+
+# this script has different data structures related to the nodes, all have the same shape,
+# very similar to the "right_femur_nodes.csv" file, i.e. they are list of lists, each
+# element of the outer list is a row in the file, so it contains all the nodes of the same group
+# elements of the inner list contain the data for each node.
+# for example it is an integer of the Abaqus ID for `nodes` and a Numpy array with 3 components
+# for `coordinates`, `rotated_coordinates`, `U` and `U_rotated_back`.
 
 logging.basicConfig(filename=filename + ".log",level=logging_level, filemode="w")
 
@@ -28,134 +36,30 @@ from odbAccess import openOdb
 logging.info("Reading file", filename)
 odb = openOdb(filename)
 logging.info("Reading file", nodes_filename)
-#lastFrame = odb.steps['Step-1'].frames[-1]
-#session.viewports['Viewport: 1'].odbDisplay.setFrame(step=0, frame=6)
 
-from macro_library import read_odb_coordinates, flatten_list_of_lists
+from macro_library import read_odb_coordinates, flatten_list_of_lists, write_csv, rotate_coordinates, rotate_displacements_back
 
 nodes, coordinates = read_odb_coordinates(nodes_filename, odb)
-
 number_of_points = int(sum(map(len, nodes)))
-
-if test_coordinates:
-    coordinates[3457] = np.array([0.207,0.218,0.223])
-    coordinates[3459] = np.array([0.210,0.218,0.223])
-    coordinates[3714] = np.array([0.210,0.218,0.226])
-    coordinates[3713] = np.array([0.207,0.218,0.226])
-    coordinates[3435] = np.array([0.207,0.215,0.223])
-    coordinates[3437] = np.array([0.210,0.215,0.223])
-    coordinates[3689] = np.array([0.210,0.215,0.226])
-    coordinates[3688] = np.array([0.207,0.215,0.226])
-    coordinates[2801] = np.array([0.201,0.224,0.214])
-    coordinates[2803] = np.array([0.204,0.224,0.214])
-    coordinates[3033] = np.array([0.204,0.224,0.217])
-    coordinates[3032] = np.array([0.201,0.224,0.217])
-    coordinates[2781] = np.array([0.201,0.221,0.214])
-    coordinates[2783] = np.array([0.204,0.221,0.214])
-    coordinates[3013] = np.array([0.204,0.221,0.217])
-    coordinates[3012] = np.array([0.201,0.221,0.217])
-    coordinates[2780] = np.array([0.198,0.221,0.214])
-    coordinates[2781] = np.array([0.201,0.221,0.214])
-    coordinates[3012] = np.array([0.201,0.221,0.217])
-    coordinates[3011] = np.array([0.198,0.221,0.217])
-    coordinates[2758] = np.array([0.198,0.218,0.214])
-    coordinates[2759] = np.array([0.201,0.218,0.214])
-    coordinates[2990] = np.array([0.201,0.218,0.217])
-    coordinates[2989] = np.array([0.198,0.218,0.217])
-    coordinates[2758] = np.array([0.198,0.218,0.214])
-    coordinates[2759] = np.array([0.201,0.218,0.214])
-    coordinates[2990] = np.array([0.201,0.218,0.217])
-    coordinates[2989] = np.array([0.198,0.218,0.217])
-    coordinates[2739] = np.array([0.198,0.215,0.214])
-    coordinates[2741] = np.array([0.201,0.215,0.214])
-    coordinates[2970] = np.array([0.201,0.215,0.217])
-    coordinates[2969] = np.array([0.198,0.215,0.217])
-    coordinates[2947] = np.array([0.195,0.212,0.217])
-    coordinates[2949] = np.array([0.198,0.212,0.217])
-    coordinates[3177] = np.array([0.198,0.212,0.220])
-    coordinates[3175] = np.array([0.195,0.212,0.220])
-    coordinates[2946] = np.array([0.195,0.209,0.217])
-    coordinates[2948] = np.array([0.198,0.209,0.217])
-    coordinates[3176] = np.array([0.198,0.209,0.220])
-    coordinates[3174] = np.array([0.195,0.209,0.220])
-    coordinates[2801] = np.array([0.201,0.224,0.214])
-    coordinates[2803] = np.array([0.204,0.224,0.214])
-    coordinates[3033] = np.array([0.204,0.224,0.217])
-    coordinates[3032] = np.array([0.201,0.224,0.217])
-    coordinates[2781] = np.array([0.201,0.221,0.214])
-    coordinates[2783] = np.array([0.204,0.221,0.214])
-    coordinates[3013] = np.array([0.204,0.221,0.217])
-    coordinates[3012] = np.array([0.201,0.221,0.217])
-    coordinates[2781] = np.array([0.201,0.221,0.214])
-    coordinates[2783] = np.array([0.204,0.221,0.214])
-    coordinates[3013] = np.array([0.204,0.221,0.217])
-    coordinates[3012] = np.array([0.201,0.221,0.217])
-    coordinates[2759] = np.array([0.201,0.218,0.214])
-    coordinates[2763] = np.array([0.204,0.218,0.214])
-    coordinates[2991] = np.array([0.204,0.218,0.217])
-    coordinates[2990] = np.array([0.201,0.218,0.217])
-    coordinates[2759] = np.array([0.201,0.218,0.214])
-    coordinates[2763] = np.array([0.204,0.218,0.214])
-    coordinates[2991] = np.array([0.204,0.218,0.217])
-    coordinates[2990] = np.array([0.201,0.218,0.217])
-    coordinates[2741] = np.array([0.201,0.215,0.214])
-    coordinates[2761] = np.array([0.204,0.215,0.214])
-    coordinates[2973] = np.array([0.204,0.215,0.217])
-    coordinates[2970] = np.array([0.201,0.215,0.217])
-
-#coordinates[2759] = np.array([0.201, 0.218, 0.214])
-#coordinates[2970] = np.array([0.201, 0.215, 0.217])
-with open('coordinates_before_rotation.csv', 'w') as csvfile:
-    fieldnames = ['node'] + ["x", "y", "z"]
-    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-
-    writer.writeheader()
-    for macro in nodes:
-        for node in macro:
-            writer.writerow({'node': node,
-                             'x': coordinates[node][0],
-                             'y': coordinates[node][1],
-                             'z': coordinates[node][2],
-                            })
+write_csv('coordinates_before_rotation.csv', coordinates, nodes)
 
 ######## Perform rotation around y centered on reference node
-
-alpha = np.radians(alpha_degrees)
-
-# rotation matrix with 0 on the y axis because that component doesn't have to be modified
-transformation_matrix = np.array([[ np.cos(alpha), 0, np.sin(alpha) ],
-                                  [             0, 0,             0 ],
-                                  [-np.sin(alpha), 0, np.cos(alpha) ]])
-
-rotated_coordinates = {}
-# rotation around y centered on reference node
-for macro in nodes:
-    ref_node = macro[0] # reference node
-    for node in macro:
-        rotated_coordinates[node] = coordinates[ref_node] + \
-             np.dot(transformation_matrix, coordinates[node] - coordinates[ref_node])
-
-with open('coordinates_after_rotation.csv', 'w') as csvfile:
-    fieldnames = ['node'] + ["x", "y", "z"]
-    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-
-    writer.writeheader()
-    for macro in nodes:
-        for node in macro:
-            writer.writerow({'node': node,
-                             'x': rotated_coordinates[node][0],
-                             'y': rotated_coordinates[node][1],
-                             'z': rotated_coordinates[node][2],
-                            })
+rotated_coordinates = rotate_coordinates(alpha_degrees, coordinates)
+write_csv('coordinates_after_rotation.csv', rotated_coordinates, nodes)
 
 ######## Extract displacement at the points
-#rounded_coordinates = [np.around(rotated_coordinates[n], decimals=3) for n in flatten_list_of_lists(nodes)]
-rounded_coordinates = [rotated_coordinates[n] for n in flatten_list_of_lists(nodes)]
-logging.debug(rounded_coordinates[:4])
-session.Path(name='Path-A', type=POINT_LIST, expression=rounded_coordinates)
+list_of_rotated_coordinates = flatten_list_of_lists(coordinates)
+session.Path(name='Path-A', type=POINT_LIST, expression=list_of_rotated_coordinates)
 pth = session.paths['Path-A']
 
-U = {}
+# Create empty `U`
+U = []
+for macro in nodes:
+    U.append([])
+    for node in macro:
+        U[-1].append([])
+
+# Extract displacements from the odb and save them in U
 components = ["U1", "U2", "U3"]
 for component in components:
     session.viewports['Viewport: 1'].setValues(displayedObject=odb)
@@ -172,52 +76,26 @@ for component in components:
     yQuantity = visualization.QuantityType(type=DISPLACEMENT)
     session.xyDataObjects['XYData-' + component].setValues(axis1QuantityType=xQuantity, axis2QuantityType=yQuantity)
 
-    U[component] = [x[1] for x in session.xyDataObjects['XYData-' + component]]
-    logging.debug("Lenght of %s: %d", component, len(U[component]))
+    all_U_for_one_component = [x[1] for x in session.xyDataObjects['XYData-' + component]]
+    i = 0
+    for macro in U:
+        for node_U in macro:
+            node_U.append(all_U_for_one_component[i])
+            i = i + 1
+            
+    logging.debug("Lenght of %s: %d", component, len(all_U_for_one_component))
 
-    if len(U[component]) != number_of_points:
+    if len(all_U_for_one_component) != number_of_points:
         logging.error("Length of component {} is {} instead of {}".format(component,
-                  len(U[component]), number_of_points))
+                  all_U_for_one_component, number_of_points))
 
 ######## Write the displacements to disk
 
-with open('U.csv', 'w') as csvfile:
-    fieldnames = ['node'] + components
-    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-
-    writer.writeheader()
-    i = 0
-    for macro in nodes:
-        for node in macro:
-            logging.debug(node, i)
-            writer.writerow({'node': node,
-                             'U1': U['U1'][i],
-                             'U2': U['U2'][i],
-                             'U3': U['U3'][i],
-                            })
-            i = i + 1
+write_csv('U.csv', U, nodes)
 
 ######## Rotate the displacement back
 
-transformation_matrix = np.array([[ np.cos(-alpha), 0, np.sin(-alpha) ],
-                                  [              0, 1,             0 ],
-                                  [-np.sin(-alpha), 0, np.cos(-alpha) ]])
+# no need to provide -alpha here, sign is changed inside the function
+rotated_U = rotate_displacements_back(alpha_degrees, U)
 
-with open('U_rotated_back.csv', 'w') as csvfile:
-    fieldnames = ['node'] + components
-    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-
-    writer.writeheader()
-    i = 0
-    for macro in nodes:
-        for node in macro:
-            rotated = np.dot(
-                                transformation_matrix,
-                                np.array([U['U1'][i], U['U2'][i], U['U3'][i]])
-                            )
-            writer.writerow({'node': node,
-                             'U1': rotated[0],
-                             'U2': rotated[1],
-                             'U3': rotated[2]
-                            })
-            i = i + 1
+write_csv('U_rotated_back.csv', rotated_U, nodes)
