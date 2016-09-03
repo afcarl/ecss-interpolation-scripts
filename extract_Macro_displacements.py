@@ -2,9 +2,7 @@ from __future__ import division, print_function
 import sys
 
 import numpy as np
-import csv
 import logging
-from itertools import chain
 
 ## Abaqus CAE imports
 import visualization
@@ -37,15 +35,15 @@ logging.info("Reading file", filename)
 odb = openOdb(filename)
 logging.info("Reading file", nodes_filename)
 
-from macro_library import read_odb_coordinates, flatten_list_of_lists, write_csv, rotate_coordinates, rotate_displacements_back
+from macro_library import read_odb_coordinates, flatten_list_of_lists, write_rpt, rotate_coordinates, rotate_displacements_back
 
 nodes, coordinates = read_odb_coordinates(nodes_filename, odb)
 number_of_points = int(sum(map(len, nodes)))
-write_csv('coordinates_before_rotation.csv', coordinates, nodes)
+write_rpt('coordinates_before_rotation.rpt', coordinates, nodes)
 
 ######## Perform rotation around y centered on reference node
 rotated_coordinates = rotate_coordinates(alpha_degrees, coordinates)
-write_csv('coordinates_after_rotation.csv', rotated_coordinates, nodes)
+write_rpt('coordinates_after_rotation.rpt', rotated_coordinates, nodes)
 
 ######## Extract displacement at the points
 list_of_rotated_coordinates = flatten_list_of_lists(coordinates)
@@ -76,7 +74,7 @@ for component in components:
     yQuantity = visualization.QuantityType(type=DISPLACEMENT)
     session.xyDataObjects['XYData-' + component].setValues(axis1QuantityType=xQuantity, axis2QuantityType=yQuantity)
 
-    all_U_for_one_component = [x[1] for x in session.xyDataObjects['XYData-' + component]]
+    all_U_for_one_component = [x[1]*1e6 for x in session.xyDataObjects['XYData-' + component]]
     i = 0
     for macro in U:
         for node_U in macro:
@@ -91,11 +89,11 @@ for component in components:
 
 ######## Write the displacements to disk
 
-write_csv('U.csv', U, nodes)
+write_rpt('U.rpt', U, nodes, fields=components)
 
 ######## Rotate the displacement back
 
 # no need to provide -alpha here, sign is changed inside the function
 rotated_U = rotate_displacements_back(alpha_degrees, U)
 
-write_csv('U_rotated_back.csv', rotated_U, nodes)
+write_rpt('U_rotated_back.rpt', rotated_U, nodes, fields=components)

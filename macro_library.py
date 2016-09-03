@@ -60,16 +60,16 @@ def rotate_displacements_back(alpha_degrees, U):
             rotated_displacements[-1].append(np.dot(transformation_matrix, np.array(node_U)))
     return rotated_displacements
 
-def write_csv(filename, data, nodes): 
+def write_rpt(filename, data, nodes, fields=["x", "y", "z"]): 
     with open(filename, 'w') as csvfile:
-        fieldnames = ['node'] + ["x", "y", "z"]
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        fieldnames = ['node'] + fields
+        writer = csv.DictWriter(csvfile, delimiter="\t", fieldnames=fieldnames)
 
         writer.writeheader()
         for macro, macro_data in zip(nodes, data):
             for node, node_data in zip(macro, macro_data):
                 writer.writerow({'node': node,
-                                 'x': node_data[0],
-                                 'y': node_data[1],
-                                 'z': node_data[2],
+                                 fields[0]: node_data[0],
+                                 fields[1]: node_data[1],
+                                 fields[2]: node_data[2],
                                 })
