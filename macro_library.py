@@ -32,19 +32,19 @@ def rotate_coordinates(alpha_degrees, coordinates):
 
     alpha = np.radians(alpha_degrees)
 
-# rotation matrix with 0 on the y axis because that component doesn't have to be modified
-    transformation_matrix = np.array([[ np.cos(alpha), 0, np.sin(alpha) ],
-                                      [             0, 0,             0 ],
-                                      [-np.sin(alpha), 0, np.cos(alpha) ]])
-
     rotated_coordinates = []
-# rotation around y centered on reference node
+    # rotation of the relative vector between node and ref_node around the y axis
     for macro in coordinates:
         ref_node_coordinates = macro[0] # reference node
         rotated_coordinates.append([])
         for node_coordinates in macro:
-            rotated_coordinates[-1].append(ref_node_coordinates + \
-                 np.dot(transformation_matrix, node_coordinates - ref_node_coordinates))
+            delta = node_coordinates - ref_node_coordinates # relative position
+            rotated_coordinates[-1].append(np.array([
+                ref_node_coordinates[0] + np.cos(alpha) * delta[0] + np.sin(alpha) * delta[2],
+                node_coordinates[1],
+                ref_node_coordinates[2] - np.sin(alpha) * delta[0] + np.cos(alpha) * delta[2],
+            ]))
+
     return rotated_coordinates
 
 def rotate_displacements_back(alpha_degrees, U):
