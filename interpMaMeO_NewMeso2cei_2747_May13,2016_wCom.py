@@ -1,4 +1,7 @@
 # This script works with the meso model positioned correctly with respect to the micro-model. 
+# AZ:
+# Usage: 
+# python interpMaMeO_NewMeso2cei_2747_May13,2016_wCom.py input_meso.inp new_file.inp upmult_factor nodecheck.inp
 
 import os;
 global deform_matrix_brick;
