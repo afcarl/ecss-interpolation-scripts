@@ -58,21 +58,25 @@ print("""\033[32mIf asked for a file name, please enter the FULL PATH unless\nth
 
 g = ""
 
-g = input("\033[32mInput name of meso input file (include .inp)\033[0m: ")
+#g = input("\033[32mInput name of meso input file (include .inp)\033[0m: ")
+g = sys.arg[1]
 
 f = ""
 
 print("\033[32mInput name of new file (include .inp):\033[0m ")
-f = input("\033[32mNote, it can't be the same as input file: \033[0m: ")
+#f = input("\033[32mNote, it can't be the same as input file: \033[0m: ")
+f = sys.arg[2]
 
 print("\033[32mPlease enter the multiplication factor (for example, for Joyce can be 10**6).\033[0m: ")
 print("\033[32mNOTE 10^6 has no meaning in python, you need to enter it as 10**6.\033[0m: ")
-upmult_factor = eval(input("\033[32mEnter 1 if you do not want a scaling factor, not 0: \033[0m: "))
+#upmult_factor = eval(input("\033[32mEnter 1 if you do not want a scaling factor, not 0: \033[0m: "))
+upmult_factor = int(sys.argv[3])
 
 print("\033[32mYour multiplication factor is\033[0m: ", upmult_factor)
 print("\033[32m\n\n\n\nNOW RUNNING INTERPOLATION.... PLASE WAIT\n\n\033[0m")
 
-nodecheckfile = input("\033[32mInput the name of the NODECHECK output file (include .inp)\033[0m: ")
+#nodecheckfile = input("\033[32mInput the name of the NODECHECK output file (include .inp)\033[0m: ")
+nodecheckfile = sys.argv[4]
 nodecheck = open(nodecheckfile, 'w')
 
 ##Making a list of nodes from the meso model
