@@ -1,8 +1,8 @@
 # This script works with the meso model positioned correctly with respect to the micro-model. 
 # AZ:
 # Usage: 
-# python interpMaMeO_NewMeso2cei_2747_May13,2016_wCom.py input_meso.inp new_file.inp upmult_factor nodecheck.inp
-
+# python interpMaMeO_NewMeso2cei_2747_May13,2016_wCom.py input_meso.inp new_file.inp upmult_factor nodecheck.inp input_rpt section
+import sys
 import os;
 global deform_matrix_brick;
 global upmult_factor;
@@ -62,13 +62,13 @@ print("""\033[32mIf asked for a file name, please enter the FULL PATH unless\nth
 g = ""
 
 #g = input("\033[32mInput name of meso input file (include .inp)\033[0m: ")
-g = sys.arg[1]
+g = sys.argv[1]
 
 f = ""
 
 print("\033[32mInput name of new file (include .inp):\033[0m ")
 #f = input("\033[32mNote, it can't be the same as input file: \033[0m: ")
-f = sys.arg[2]
+f = sys.argv[2]
 
 print("\033[32mPlease enter the multiplication factor (for example, for Joyce can be 10**6).\033[0m: ")
 print("\033[32mNOTE 10^6 has no meaning in python, you need to enter it as 10**6.\033[0m: ")
