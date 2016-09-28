@@ -23,3 +23,5 @@ ECSS interpolation scripts
 * Results: see the `results_macro` folder
 
 ### Meso
+
+* `interpMaMeO_NewMeso2cei_2747_May13,2016_wCom.py` takes 4 arguments: `input_meso.inp new_file.inp upmult_factor nodecheck.inp`
