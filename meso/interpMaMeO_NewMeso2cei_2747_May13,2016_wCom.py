@@ -18,26 +18,16 @@ global templatef;
 #where xi,yi,zi are the x,y,z displacements of node of the
 #macro element that interfaces with the meso cube.
 
+input_rpt = sys.argv[5]
+section = int(sys.argv[6])
+
+import pandas as pd
+
+u = pd.read_table(input_rpt).iloc[section:section+8]
+
 #Macro deformations or displacements in the order of the nodes of the macro element
-deform_matrix_brick =[
-[81.6642132,-1181.50376,-573.547033],
-[72.9777894,-1222.20581,-654.857839],
-[135.365597,-1303.0722,-659.670157],
-[135.851966,-1263.16375,-586.180307],
-[43.535747,-1188.04479,-655.555865],
-[29.4630645,-1229.02007,-737.943279],
-[97.5616858,-1313.44167,-742.137665],
-[95.9457684,-1270.5283,-667.15834]##No comma here, or errors will happen
-]
-deform_macro =[
-[3457,81.6642132,-1181.50376,-573.547033],
-[3459,72.9777894,-1222.20581,-654.857839],
-[3714,135.365597,-1303.0722,-659.670157],
-[3713,135.851966,-1263.16375,-586.180307],
-[3435,43.535747,-1188.04479,-655.555865],
-[3437,29.4630645,-1229.02007,-737.943279],
-[3689,97.5616858,-1313.44167,-742.137665],
-[3688,95.9457684,-1270.5283,-667.15834]]
+deform_matrix_brick = list(u[["U1", "U2", "U3"]].to_records(index=False))  
+deform_macro = list(u.to_records(index=False))
 
 #Macro nodes in meso order
 mac_inMes = [5,1,0,4,6,2,3,7]
