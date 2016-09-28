@@ -10,12 +10,15 @@ from abaqus import *
 from abaqusConstants import *
 
 ######## CONFIGURATION OPTIONS
-filename = "rgtd5-SI91pss.odb"
-nodes_filename = "right_femur_nodes.csv"
+#filename = "rgtd5-SI91pss.odb"
+filename = "lgtd4-SI91.odb"
+#nodes_filename = "right_femur_nodes.csv"
+nodes_filename = "left_femur_nodes.csv"
 # logging.DEBUG for verbose output, logging.INFO intermediate, logging.ERROR for quiet
 logging_level = logging.DEBUG
 projection_tolerance = 0.0000001
-alpha_degrees = -48.12
+#alpha_degrees = -48.12
+alpha_degrees = 61.39 
 ########
 
 ######## Data structures
