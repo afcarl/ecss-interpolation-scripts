@@ -24,4 +24,7 @@ ECSS interpolation scripts
 
 ### Meso
 
-* `interpMaMeO_NewMeso2cei_2747_May13,2016_wCom.py` takes 4 arguments: `input_meso.inp new_file.inp upmult_factor nodecheck.inp`
+* Run interpolation of each section of the macro independently
+* Modified the interpolation script to read automatically the rotated displacements, the only difference is that the section number instead of being 2747 is 0, the new id is based on the row in the `right_femur_nodes.csv` and `left_femur nodes.csv`.
+* `interpMaMeO_NewMeso2cei_2747_May13,2016_wCom.py` takes 6 arguments: `input_meso.inp new_file.inp upmult_factor nodecheck.inp rotated_U.rpt section_id`
+* run `meso/run_interp.sh` to run create the 16 models
