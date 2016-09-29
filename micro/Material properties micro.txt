@@ -1,0 +1,17 @@
+*Material, name=ABRI
+*Elastic, type=ENGINEERING CONSTANTS
+{M3div2}, {M3div2}, {Mdiv2},0.3,0.3,0.3,4E+09,4E+09,
+4E+09
+**
+*Material, name=ACEML
+*Elastic, type=isotropic
+M, 0.4
+**
+*Material, name=AEXT
+*Elastic, type=ENGINEERING CONSTANTS
+{Mdiv2},{Mdiv2},{M3div2}, 0.3,0.3,0.3,4E+09,4E+09,
+4E+09
+**
+*Material, name=MBOX
+*Elastic, type=ISOTROPIC
+{M}, 0.4
