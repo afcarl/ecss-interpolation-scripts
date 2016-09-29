@@ -12,10 +12,10 @@ if __name__ == "__main__":
         slurm_job_template = f.read()
 
     for input_filename in sys.argv[1:]: # it supports any number of files, you can call it with python submit_meso_jobs.py *.inp
-        print("Preparing file", input_filename)
+        #print("Preparing file", input_filename)
 
-        slurm_job_template_filled = slurm_job_template.format(input_filename=input_filename)
-        #print(slurm_job_template_filled)
+        slurm_job_template_filled = slurm_job_template.format(input_filename=input_filename.replace(".inp", ""))
+        print(slurm_job_template_filled)
 
         # calls sbatch to submit a job for each input file
         proc = subprocess.Popen("sbatch", stdin=subprocess.PIPE)
