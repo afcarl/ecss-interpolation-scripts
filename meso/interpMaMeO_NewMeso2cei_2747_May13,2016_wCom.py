@@ -18,7 +18,8 @@ global templatef;
 #where xi,yi,zi are the x,y,z displacements of node of the
 #macro element that interfaces with the meso cube.
 
-input_rpt = sys.argv[5]
+side = sys.argv[5]
+input_rpt = "../results_macro/{}_femur/U_rotated_back.rpt".format(side)
 section = int(sys.argv[6])
 
 import pandas as pd
@@ -28,6 +29,7 @@ u = pd.read_table(input_rpt).iloc[section:section+8]
 #Macro deformations or displacements in the order of the nodes of the macro element
 deform_matrix_brick = list(u[["U1", "U2", "U3"]].to_records(index=False))  
 deform_macro = list(u.to_records(index=False))
+
 
 #Macro nodes in meso order
 mac_inMes = [5,1,0,4,6,2,3,7]
@@ -291,6 +293,8 @@ def function_final():
     #To check a few nodes
 	    #if node_numb not in mynodes:
             #break		
+        if len(a_node) != 4:
+            print("Error in a_node", a_node)
 		
         x_hat = a_node[1]+tx
         y_hat = a_node[2]+ty
@@ -467,6 +471,16 @@ ALL_meso_nodes = read_nodes_1(meso_)
 def_mat = []
 function_final();
 fun(finalfile, templatef);
+
+# zonca: replace material
+material = pd.read_csv("Material_prop _for_elemRightLleftfemur - May 27, 2016.txt")
+with open(finalfile, "r") as f:
+    all_finalfile = f.read()
+
+all_finalfile = all_finalfile.format(elastic_modulus=material[material["Femur"] == side.capitalize()].iloc[section]["ElasticModulus[Pa]"])
+
+with open(finalfile, "w") as f:
+    f.write(all_finalfile)
 
 #print("\033[32mNOW PUSHING FILES TO SDSC \n\033[0m")
 #c = 0
