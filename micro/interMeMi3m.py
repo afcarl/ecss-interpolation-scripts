@@ -2,13 +2,15 @@ from math import *
 import os
 print("\033[32mPLEASE FOLLOW THE PROMPTS. THIS IS THE SCRIPT THAT INTERPOLATES MESO-LEVEL DISPLACEMENTS ONTO THE MICRO LEVEL MODEL.\033[0m")
 
-Xmeso_filename = str(input("\033[32mInput the MESO file name with the .inp extension: \033[0m: "))
+import sys
 
-Xmeso_deformname = str(input("\033[32mInput the MESO displacemnets file name with .rpt extension: \033[0m: "))
+Xmeso_filename = sys.argv[1] #str(input("\033[32mInput the MESO file name with the .inp extension: \033[0m: "))
 
-Xmicro_filename = str(input("\033[32mInput the MICRO file name with the .inp extension: \033[0m: "))
+Xmeso_deformname = sys.argv[2] #str(input("\033[32mInput the MESO displacemnets file name with .rpt extension: \033[0m: "))
 
-Xmicro_DUMP = str(input("\033[32mPlease indicate the name of the new file including the .inp extesion. Note that you cannot use the same name as a file above... \033[0m: "))
+Xmicro_filename = sys.argv[3] #str(input("\033[32mInput the MICRO file name with the .inp extension: \033[0m: "))
+
+Xmicro_DUMP = sys.argv[4] #str(input("\033[32mPlease indicate the name of the new file including the .inp extesion. Note that you cannot use the same name as a file above... \033[0m: "))
 
 
 
