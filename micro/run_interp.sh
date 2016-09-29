@@ -9,6 +9,7 @@ do
         do
             python interMeMi3m.py $side $section $model
             python interp2.py
+            python inject_material_properties.py $side $section $model
         done
     done
 done
