@@ -3,16 +3,21 @@ import os
 print("\033[32mPLEASE FOLLOW THE PROMPTS. THIS IS THE SCRIPT THAT INTERPOLATES MESO-LEVEL DISPLACEMENTS ONTO THE MICRO LEVEL MODEL.\033[0m")
 
 import sys
+import os.path
 
-Xmeso_filename = sys.argv[1] #str(input("\033[32mInput the MESO file name with the .inp extension: \033[0m: "))
+side = sys.argv[1]
+section = int(sys.argv[2])
+model = sys.argv[3]
 
-Xmeso_deformname = sys.argv[2] #str(input("\033[32mInput the MESO displacemnets file name with .rpt extension: \033[0m: "))
+#str(input("\033[32mInput the MESO file name with the .inp extension: \033[0m: "))
+Xmeso_filename = "../meso/NewMeso_May8_2016_{side}_section_{section}.inp".format(side=side, section=section)
 
-Xmicro_filename = sys.argv[3] #str(input("\033[32mInput the MICRO file name with the .inp extension: \033[0m: "))
+Xmeso_deformname = Xmeso_filename.replace("inp", "_U.rpt") #str(input("\033[32mInput the MESO displacemnets file name with .rpt extension: \033[0m: "))
 
-Xmicro_DUMP = sys.argv[4] #str(input("\033[32mPlease indicate the name of the new file including the .inp extesion. Note that you cannot use the same name as a file above... \033[0m: "))
+Xmicro_filename = "micro-{}_M8M13_el.inp".format(model) #str(input("\033[32mInput the MICRO file name with the .inp extension: \033[0m: "))
 
-
+#str(input("\033[32mPlease indicate the name of the new file including the .inp extesion. Note that you cannot use the same name as a file above... \033[0m: "))
+Xmicro_DUMP = os.path.basename(Xmeso_filename.replace("Meso", "Micro" + model))
 
 Xcmdfilename = "interp2.py" + ".cmd"
 
