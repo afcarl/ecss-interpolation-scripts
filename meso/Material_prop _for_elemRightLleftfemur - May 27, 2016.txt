@@ -1,4 +1,4 @@
-Femur,Element#,ElasticModulus[Pa]	   
+Femur,Element#,ElasticModulus[Pa]
 Right,2747,9.8635E+09	   
 Right,2206,7.7283E+09	   
 Right,2187,10.8745E+09	   
