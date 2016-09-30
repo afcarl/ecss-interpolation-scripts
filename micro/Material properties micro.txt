@@ -5,7 +5,7 @@
 **
 *Material, name=ACEML
 *Elastic, type=isotropic
-M, 0.4
+{M}, 0.4
 **
 *Material, name=AEXT
 *Elastic, type=ENGINEERING CONSTANTS
