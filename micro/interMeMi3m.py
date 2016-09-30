@@ -12,7 +12,7 @@ model = sys.argv[3]
 #str(input("\033[32mInput the MESO file name with the .inp extension: \033[0m: "))
 Xmeso_filename = "../meso/NewMeso_May8_2016_{side}_section_{section}.inp".format(side=side, section=section)
 
-Xmeso_deformname = Xmeso_filename.replace("inp", "_U.rpt") #str(input("\033[32mInput the MESO displacemnets file name with .rpt extension: \033[0m: "))
+Xmeso_deformname = Xmeso_filename.replace(".inp", "_U.rpt") #str(input("\033[32mInput the MESO displacemnets file name with .rpt extension: \033[0m: "))
 
 Xmicro_filename = "micro-{}_M8M13_el.inp".format(model) #str(input("\033[32mInput the MICRO file name with the .inp extension: \033[0m: "))
 
