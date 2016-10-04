@@ -10,15 +10,21 @@ from abaqus import *
 from abaqusConstants import *
 
 ######## CONFIGURATION OPTIONS
-#filename = "rgtd5-SI91pss.odb"
-filename = "lgtd4-SI91.odb"
-#nodes_filename = "right_femur_nodes.csv"
-nodes_filename = "left_femur_nodes.csv"
-# logging.DEBUG for verbose output, logging.INFO intermediate, logging.ERROR for quiet
-logging_level = logging.DEBUG
+#Choose settings for right or left femur
+filename = "rgtd5-SI91pss.odb"
+nodes_filename = "right_femur_nodes.csv"
+alpha_degrees = -48.12
+frame_num = 6
+
+#filename = "lgtd4-SI91.odb"
+#nodes_filename = "left_femur_nodes.csv"
+#alpha_degrees = 61.39
+#frame_num = 4
+
+#For both femurs
 projection_tolerance = 0.0000001
-#alpha_degrees = -48.12
-alpha_degrees = 61.39 
+#logging.DEBUG for verbose output, logging.INFO intermediate, logging.ERROR for quiet
+logging_level = logging.DEBUG
 ########
 
 ######## Data structures
@@ -64,7 +70,7 @@ for macro in nodes:
 components = ["U1", "U2", "U3"]
 for component in components:
     session.viewports['Viewport: 1'].setValues(displayedObject=odb)
-    session.viewports['Viewport: 1'].odbDisplay.setFrame(step=0, frame=6)
+    session.viewports['Viewport: 1'].odbDisplay.setFrame(step=0, frame=frame_num)
 
     session.viewports['Viewport: 1'].odbDisplay.setPrimaryVariable(
             variableLabel='U', outputPosition=NODAL, refinement=(COMPONENT, component))
