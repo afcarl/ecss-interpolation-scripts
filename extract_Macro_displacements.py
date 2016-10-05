@@ -58,7 +58,7 @@ session.viewports['Viewport: 1'].setValues(displayedObject=odb)
 session.viewports['Viewport: 1'].odbDisplay.setFrame(step=0, frame=frame_num)
 
 ######## Extract displacement at the points
-list_of_rotated_coordinates = flatten_list_of_lists(coordinates)
+list_of_rotated_coordinates = flatten_list_of_lists(rotated_coordinates)
 session.Path(name='Path-A', type=POINT_LIST, expression=list_of_rotated_coordinates)
 pth = session.paths['Path-A']
 
