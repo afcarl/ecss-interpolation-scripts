@@ -54,6 +54,9 @@ write_rpt('coordinates_before_rotation.rpt', coordinates, nodes)
 rotated_coordinates = rotate_coordinates(alpha_degrees, coordinates)
 write_rpt('coordinates_after_rotation.rpt', rotated_coordinates, nodes)
 
+session.viewports['Viewport: 1'].setValues(displayedObject=odb)
+session.viewports['Viewport: 1'].odbDisplay.setFrame(step=0, frame=frame_num)
+
 ######## Extract displacement at the points
 list_of_rotated_coordinates = flatten_list_of_lists(coordinates)
 session.Path(name='Path-A', type=POINT_LIST, expression=list_of_rotated_coordinates)
@@ -69,19 +72,20 @@ for macro in nodes:
 # Extract displacements from the odb and save them in U
 components = ["U1", "U2", "U3"]
 for component in components:
-    session.viewports['Viewport: 1'].setValues(displayedObject=odb)
-    session.viewports['Viewport: 1'].odbDisplay.setFrame(step=0, frame=frame_num)
 
     session.viewports['Viewport: 1'].odbDisplay.setPrimaryVariable(
             variableLabel='U', outputPosition=NODAL, refinement=(COMPONENT, component))
 
     session.XYDataFromPath(name='XYData-' + component, path=pth, includeIntersections=False,
-        projectOntoMesh=True, pathStyle=PATH_POINTS,
+        projectOntoMesh=False, pathStyle=PATH_POINTS, numIntervals=10,
         projectionTolerance=projection_tolerance, shape=DEFORMED, labelType=TRUE_DISTANCE)
 
-    xQuantity = visualization.QuantityType(type=NUMBER)
-    yQuantity = visualization.QuantityType(type=DISPLACEMENT)
-    session.xyDataObjects['XYData-' + component].setValues(axis1QuantityType=xQuantity, axis2QuantityType=yQuantity)
+    x0 = session.xyDataObjects['XYData-'+component]
+    session.writeXYReport(fileName=component + '.rpt', xyData=(x0, ))
+
+    #xQuantity = visualization.QuantityType(type=NUMBER)
+    #yQuantity = visualization.QuantityType(type=DISPLACEMENT)
+    #session.xyDataObjects['XYData-' + component].setValues(axis1QuantityType=xQuantity, axis2QuantityType=yQuantity)
 
     all_U_for_one_component = [x[1]*1e6 for x in session.xyDataObjects['XYData-' + component]]
     i = 0
