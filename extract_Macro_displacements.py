@@ -40,9 +40,9 @@ logging.basicConfig(filename=filename + ".log",level=logging_level, filemode="w"
 
 ######## Extract coordinates from the odb file and store it in nodes
 from odbAccess import openOdb
-logging.info("Reading file", filename)
+logging.info("Reading file %s", filename)
 odb = openOdb(filename)
-logging.info("Reading file", nodes_filename)
+logging.info("Reading file %s", nodes_filename)
 
 from macro_library import read_odb_coordinates, flatten_list_of_lists, write_rpt, rotate_coordinates, rotate_displacements_back
 
@@ -97,8 +97,8 @@ for component in components:
     logging.debug("Lenght of %s: %d", component, len(all_U_for_one_component))
 
     if len(all_U_for_one_component) != number_of_points:
-        logging.error("Length of component {} is {} instead of {}".format(component,
-                  all_U_for_one_component, number_of_points))
+        logging.error("Length of component %s is %d instead of %d",component,
+                  all_U_for_one_component, number_of_points)
 
 ######## Write the displacements to disk
 
