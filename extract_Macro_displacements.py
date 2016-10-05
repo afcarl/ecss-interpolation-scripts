@@ -88,17 +88,17 @@ for component in components:
     #session.xyDataObjects['XYData-' + component].setValues(axis1QuantityType=xQuantity, axis2QuantityType=yQuantity)
 
     all_U_for_one_component = [x[1]*1e6 for x in session.xyDataObjects['XYData-' + component]]
+    logging.debug("Lenght of %s: %d", component, len(all_U_for_one_component))
+
+    if len(all_U_for_one_component) != number_of_points:
+        logging.error("Length of component %s is %d instead of %d",component,
+                  len(all_U_for_one_component), number_of_points)
     i = 0
     for macro in U:
         for node_U in macro:
             node_U.append(all_U_for_one_component[i])
             i = i + 1
             
-    logging.debug("Lenght of %s: %d", component, len(all_U_for_one_component))
-
-    if len(all_U_for_one_component) != number_of_points:
-        logging.error("Length of component %s is %d instead of %d",component,
-                  all_U_for_one_component, number_of_points)
 
 ######## Write the displacements to disk
 
