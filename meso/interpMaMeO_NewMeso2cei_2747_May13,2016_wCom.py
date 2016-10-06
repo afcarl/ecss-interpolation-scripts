@@ -19,7 +19,7 @@ global templatef;
 #macro element that interfaces with the meso cube.
 
 side = sys.argv[5]
-input_rpt = "../results_macro/{}_femur/U_rotated_back.rpt".format(side)
+input_rpt = "../results_macro/{0}_femur/U_rotated_back.rpt".format(side)
 section = int(sys.argv[6])
 
 import pandas as pd
