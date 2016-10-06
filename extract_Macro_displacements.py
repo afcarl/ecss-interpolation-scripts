@@ -52,6 +52,14 @@ write_rpt('coordinates_before_rotation.rpt', coordinates, nodes)
 
 ######## Perform rotation around y centered on reference node
 rotated_coordinates = rotate_coordinates(alpha_degrees, coordinates)
+
+## FIX FOR LEFT FEMUR POINTS OUTSIDE THE MODEL
+
+if nodes_filename.startswith("left"):
+    rotated_coordinates[0][1][2] = coordinates[0][1][2]
+    rotated_coordinates[1][1][2] = coordinates[1][1][2]
+    rotated_coordinates[3][5][2] = coordinates[2][5][2]
+
 write_rpt('coordinates_after_rotation.rpt', rotated_coordinates, nodes)
 
 session.viewports['Viewport: 1'].setValues(displayedObject=odb)
