@@ -11,15 +11,15 @@ from abaqusConstants import *
 
 ######## CONFIGURATION OPTIONS
 #Choose settings for right or left femur
-filename = "rgtd5-SI91pss.odb"
-nodes_filename = "right_femur_nodes.csv"
-alpha_degrees = -48.12
-frame_num = 6
+#filename = "rgtd5-SI91pss.odb"
+#nodes_filename = "right_femur_nodes.csv"
+#alpha_degrees = -48.12
+#frame_num = 6
 
-#filename = "lgtd4-SI91.odb"
-#nodes_filename = "left_femur_nodes.csv"
-#alpha_degrees = 61.39
-#frame_num = 4
+filename = "lgtd4-SI91pss_newversion.odb"
+nodes_filename = "left_femur_nodes.csv"
+alpha_degrees = 61.39
+frame_num = 4
 
 #For both femurs
 projection_tolerance = 0.0000001
