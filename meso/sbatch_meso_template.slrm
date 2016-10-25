@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name="abaqus"
+#SBATCH --job-name="{input_filename}"
 #SBATCH --output="abaqus.%j.%N.out"
 #SBATCH --partition=compute
 #SBATCH --nodes=1
