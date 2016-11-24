@@ -28,5 +28,5 @@ with open(Xmicro_DUMP, "r") as f:
 
 all_finalfile = all_finalfile.format(materials=materials)
 
-with open(Xmicro_DUMP, "w") as f:
+with open("s/" + Xmicro_DUMP, "w") as f:
     f.write(all_finalfile)
