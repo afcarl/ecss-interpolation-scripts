@@ -16,7 +16,7 @@ material = pd.read_csv("../meso/Material_prop _for_elemRightLleftfemur - May 27,
 
 M = material[material["Femur"] == side.capitalize()].iloc[section]["ElasticModulus[Pa]"]
 
-with open("Material properties micro.txt", "r") as f:
+with open("Material properties micro iso.txt", "r") as f:
     materials = f.read().strip()
 
 materials = materials.format(M=M, Mdiv2=M/2., M3div2=M*3/2.)
