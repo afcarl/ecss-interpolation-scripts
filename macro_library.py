@@ -23,9 +23,15 @@ def read_odb_coordinates(nodes_filename, odb):
             nodes.append([])
             coordinates.append([])
             for node in row:
-                logging.debug("Extracting coordinates for node", node)
+                logging.debug("Extracting coordinates for node %s", node)
                 nodes[-1].append(int(node))
-                coordinates[-1].append(odb.rootAssembly.instances["PART-1-1"].nodes[int(node)-1].coordinates)
+                print(odb.rootAssembly.instances["PART-1-1"].nodes)
+                print(dir(odb.rootAssembly.instances["PART-1-1"].nodes[0]))
+                print(odb.rootAssembly.instances["PART-1-1"].nodes[0].label)
+                print(type(odb.rootAssembly.instances["PART-1-1"].nodes[0].label))
+                for odb_node in odb.rootAssembly.instances["PART-1-1"].nodes:
+                    if odb_node.label == int(node):
+                        coordinates[-1].append(odb_node.coordinates)
     return nodes, coordinates
 
 def rotate_coordinates(alpha_degrees, coordinates):
