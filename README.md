@@ -1,9 +1,7 @@
 ECSS interpolation scripts
 =========================
 
-## How to run on Comet
-
-### Requirements
+## Software requirements
 
 * Python 3 installation with `pandas` to run the Python scripts (except the ones that are executed by abaqus, they use a Python 2 version distributed with abaqus)
 
@@ -16,10 +14,6 @@ Location of data files on SCRATCH on Comet:
 
     /oasis/scratch/comet/zonca/temp_project/ascenzi
     
-  
-
-### Download of the software
-
 * download the software
         
         git clone https://github.com/zonca/ecss-interpolation-scripts
@@ -28,7 +22,7 @@ Location of data files on SCRATCH on Comet:
 
         git pull https://github.com/zonca/ecss-interpolation-scripts
 
-### First step: Extract displacements from the Macro Model
+## First step: Extract displacements from the Macro Model
 
 * Edit `extract_Macro_displacements.py`, edit the top and change the `filename` of the input model, for example `lgtd4-SI91pss_newversion.odb`, `nodes_filename` for the csv file that lists all of the node ids for each section, for example `left_femur_nodes.csv`, then set the rotation `alpha_degrees` and the frame number `frame_num`.
 
@@ -42,11 +36,11 @@ Location of data files on SCRATCH on Comet:
         [zonca@comet-ln2 openodb]$ ls results_macro/*/U_r*.rpt
         results_macro/left_femur/U_rotated_back.rpt  results_macro/right_femur/U_rotated_back.rpt
 
-### Second step: Interpolate displacements to the Meso models, add material properties, run Abaqus jobs, extract Meso displacements
+## Second step: Interpolate displacements to the Meso models, add material properties, run Abaqus jobs, extract Meso displacements
 
 Everything in this section is inside the `meso` folder
 
-#### Interpolation
+### Interpolation
 
 First we want to run the interpolation script of each section of the macro independently
 
@@ -61,7 +55,7 @@ Procedure:
 
 * run `run_interp.sh` to run the interpolation to create the 16 models, this will create all the `.inp` files in the current folder
 
-#### Run abaqus
+### Run abaqus
 
 We want to submit 16 independent jobs to the scheduler on Comet to execute abaqus on all the `.inp` models, we have a slurm template `sbatch_meso_template.slrm` which is used by the Python script `submit_meso_jobs.py` to create and submit the jobs.
 
@@ -70,7 +64,7 @@ Procedure:
 * run `python submit_meso_jobs.py amodel.inp` to run a single model or `python submit_meso_jobs.py *.inp` to run all models
 * this will save all the output `.odb` files in the `meso` folder
 
-#### Extract displacements
+### Extract displacements
 
 Displacements are extracted by the script `extract_U_meso.py` and is executed with `run_extract_U_meso.sh`
 
@@ -79,11 +73,11 @@ Procedure:
 * Run `run_extract_U_meso.sh *.odb` to extract the displacements from all the models
 * The displacements for each `.odb` will be saved as `_U.rpt`, for example `NewMeso_May8_2016_left_section_1.odb` -> `NewMeso_May8_2016_left_section_1_U.rpt`
 
-### Third Step: Interpolate Meso displacements to Micro Models, add material properties, run Abaqus jobs, extract displacements, write summary Excel document
+## Third Step: Interpolate Meso displacements to Micro Models, add material properties, run Abaqus jobs, extract displacements, write summary Excel document
 
 Everything in this section is in the `micro` folder
 
-#### Interpolation
+### Interpolation
 
 Now interpolation is performed in 2 stages, `interMeMi3m.py` creates a `.inp` model file with no material properties, so this needs to be run just once.
 
@@ -102,7 +96,7 @@ The output of this stage is a set of `.inp` files in the current folder with int
 
 In case of 2 Micro models, the number of `.inp` should be 28, 7 section * 2 sides * 2 Micro models.
 
-#### Inject material properties
+### Inject material properties
 
 The second stage is to add the material properties, this is very quick, so this technique allows us to test very quickly different material properties.
 
@@ -119,7 +113,7 @@ We can also modify the script `inject_material_properties.py` to choose the corr
 
 This will write all the output `.inp` files in the `s/` subfolder, which is supposed to be a symlink to the SCRATCH filesystem.
 
-#### Run abaqus
+### Run abaqus
 
 Running abaqus is exactly the same as for Meso, infact first thing we want to symlink the `sbatch_meso_template.slrm` and the `submit_meso_jobs.py` in the `s/` folder.
 
@@ -127,12 +121,12 @@ Then we can submit all the jobs with `python submit_meso_jobs.py *.inp` **inside
 
 This will create all the outputs in the `s/` folder.
 
-#### Extract displacements
+### Extract displacements
 
 `extract_S.py` extracts the displacements for each region of interest as defined inside the `ext_set.py` file into `rpt` files inside dedicated folders, for example: `outputs_S_NewMicro5um_May8_2016_left_section_0`
 
 This can be executed by running the shell script `run_extract_S.sh *.odb` inside the `s/` folder (needs symlinks first).
 
-#### Create Excel summary
+### Create Excel summary
 
 Run `python create_S_excel.py` in the `micro` folder to loop through all of the sections and different regions and create a summary excel file in the current folder.
