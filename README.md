@@ -24,9 +24,11 @@ Location of data files on SCRATCH on Comet:
 
 ## First step: Extract displacements from the Macro Model
 
+Everything in this section is inside the base folder of the repository
+
 * Edit `extract_Macro_displacements.py`, edit the top and change the `filename` of the input model, for example `lgtd4-SI91pss_newversion.odb`, `nodes_filename` for the csv file that lists all of the node ids for each section, for example `left_femur_nodes.csv`, then set the rotation `alpha_degrees` and the frame number `frame_num`.
 
-* Run it through abaqus:
+* Run such script through abaqus for each different odb file:
 
         module load abaqus
         abq6145 viewer noGUI=extract_Macro_displacements.py
@@ -42,14 +44,15 @@ Everything in this section is inside the `meso` folder
 
 ### Interpolation
 
-First we want to run the interpolation script of each section of the macro independently
+Ma from `Material_prop _for_elemRightLleftfemur - May 27, 2016.txt`.
+
+First we want to run the interpolation script of each element of the macro independently
 
 I modified the interpolation script to read automatically the rotated displacements, the only difference is that the section number instead of being 2747 is 0, the new id is based on the row in the `right_femur_nodes.csv` and `left_femur nodes.csv`.
 
 Now the interpolation script `interpMaMeO_NewMeso2cei_2747_May13,2016_wCom.py` takes 6 arguments: `input_meso.inp new_file.inp upmult_factor nodecheck.inp rotated_U.rpt section_id`
 
 The script will read displacements from `../results_macro/[left,right]_femur/U_rotated_back.rpt` created in the section above
-It will also read material properties from `Material_prop _for_elemRightLleftfemur - May 27, 2016.txt`.
 
 Procedure:
 
@@ -66,14 +69,14 @@ Procedure:
 
 ### Extract displacements
 
-Displacements are extracted by the script `extract_U_meso.py` and is executed with `run_extract_U_meso.sh`
+Displacements are extracted by the script `extract_U_meso.py` executed with `run_extract_U_meso.sh`
 
 Procedure:
 
 * Run `run_extract_U_meso.sh *.odb` to extract the displacements from all the models
 * The displacements for each `.odb` will be saved as `_U.rpt`, for example `NewMeso_May8_2016_left_section_1.odb` -> `NewMeso_May8_2016_left_section_1_U.rpt`
 
-## Third Step: Interpolate Meso displacements to Micro Models, add material properties, run Abaqus jobs, extract displacements, write summary Excel document
+## Third Step: Interpolate Meso displacements to Micro Models, add material properties, run Abaqus jobs, extract displacements, write summary Excel document for S
 
 Everything in this section is in the `micro` folder
 
