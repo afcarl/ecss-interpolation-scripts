@@ -10,3 +10,6 @@ odb = session.odbs[filename]
 session.writeFieldReport(fileName=filename.replace(".odb", "_U.rpt"), append=ON, 
     sortItem='Node Label', odb=odb, step=0, frame=1, outputPosition=NODAL, 
     variable=(('U', NODAL), ))
+session.writeFieldReport(fileName=filename.replace(".odb", "_S.rpt"), append=ON, 
+    sortItem='Node Label', odb=odb, step=0, frame=1, outputPosition=NODAL, 
+    variable=(('S', INTEGRATION_POINT), ))
