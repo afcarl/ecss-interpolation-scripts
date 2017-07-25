@@ -7,7 +7,7 @@ import displayGroupOdbToolset as dgo
 import os
 
 filename = os.environ["ODB_FILENAME"]
-folder = "outputs_S_" + filename.replace(".odb","")
+folder = "outputs_S_july17_" + filename.replace(".odb","")
 try:
     os.mkdir(folder)
 except:
@@ -17,7 +17,7 @@ from odbAccess import openOdb
 o1 = openOdb(filename)
 
 model = "5um" if "5um" in filename else "6um"
-from ext_set import s
+from ext_set2 import s
 
 for tag in s.keys():
     regions = set([tup[0] for tup in s[tag][model]])
